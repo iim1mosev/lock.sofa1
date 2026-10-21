@@ -11,232 +11,201 @@
 <link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#160a12; --bg2:#22101b; --surface:#2b1522; --line:#ff6b9d33;
+  --bg:#160a12; --bg2:#1c0d16; --surface:#2b1522; --line:#ff6b9d33;
   --rose:#ff6b9d; --rose-d:#e0457d; --blush:#ffd0e0; --muted:#c79aae; --gold:#f2c6a0;
   --ok:#7fd8a6; --danger:#ff7a8a;
-  --r:18px;
   --head:'Aref Ruqaa','Segoe UI',serif;
   --body:'IBM Plex Sans Arabic','Segoe UI',Tahoma,sans-serif;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
+[hidden]{display:none!important}
 body{
   margin:0;min-height:100vh;font-family:var(--body);color:var(--blush);line-height:1.7;
   background:
     radial-gradient(900px 500px at 85% -10%,#ff6b9d26,transparent 60%),
-    radial-gradient(700px 500px at -10% 110%,#b0306a22,transparent 60%),
-    var(--bg);
-  padding:calc(20px + env(safe-area-inset-top,0px)) 16px calc(40px + env(safe-area-inset-bottom,0px));
+    radial-gradient(700px 500px at -10% 110%,#b0306a22,transparent 60%),var(--bg);
+  padding:calc(18px + env(safe-area-inset-top,0px)) 14px calc(24px + env(safe-area-inset-bottom,0px));
 }
 .wrap{max-width:640px;margin:auto}
 h1,h2{font-family:var(--head);font-weight:700;margin:0}
-h1{font-size:2rem;color:var(--blush)}
-h2{font-size:1.35rem;color:var(--blush)}
-small,.muted{color:var(--muted);font-size:.82rem}
+h1{font-size:1.9rem}
+small,.muted{color:var(--muted);font-size:.8rem}
 :focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
-/* inputs */
 input,textarea{
-  width:100%;padding:13px 14px;border-radius:14px;border:1px solid var(--line);
+  width:100%;padding:12px 14px;border-radius:14px;border:1px solid var(--line);
   background:var(--bg2);color:var(--blush);font:inherit;transition:border-color .2s,box-shadow .2s;
 }
 input::placeholder,textarea::placeholder{color:#c79aae88}
 input:focus,textarea:focus{outline:0;border-color:var(--rose);box-shadow:0 0 0 4px #ff6b9d26}
 input[type=datetime-local]{color-scheme:dark}
-textarea{resize:vertical;min-height:140px}
-label{display:block;margin:14px 0 6px;font-size:.9rem;color:var(--muted)}
+textarea{resize:none}
 
-/* buttons */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;
   padding:13px 18px;border:0;border-radius:14px;cursor:pointer;font:inherit;font-weight:600;color:#fff;
   background:linear-gradient(135deg,var(--rose),var(--rose-d));
-  box-shadow:0 8px 22px -8px #ff6b9d99;transition:transform .15s,box-shadow .2s,opacity .2s;
+  box-shadow:0 8px 22px -8px #ff6b9d99;transition:transform .15s,opacity .2s;
 }
-.btn:hover{box-shadow:0 12px 26px -8px #ff6b9dcc}
 .btn:active{transform:scale(.98)}
 .btn:disabled{opacity:.6;cursor:wait}
 .btn.ghost{background:transparent;box-shadow:none;border:1px solid var(--line);color:var(--muted)}
-.btn.ghost:hover{color:var(--blush);border-color:var(--rose)}
 .spin{width:16px;height:16px;border:2px solid #fff6;border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
 
 /* login */
 #login{min-height:80vh;display:flex;flex-direction:column;justify-content:center}
-.login-card{
-  background:linear-gradient(160deg,#ff6b9d1c,#ff6b9d0a);border:1px solid var(--line);
-  border-radius:24px;padding:28px 22px;backdrop-filter:blur(8px);
-}
-.login-card .sub{margin:4px 0 18px;color:var(--muted)}
+.login-card{background:linear-gradient(160deg,#ff6b9d1c,#ff6b9d0a);border:1px solid var(--line);border-radius:24px;padding:28px 22px}
+.login-card p{margin:4px 0 18px;color:var(--muted)}
 .login-card .btn{margin-top:14px}
-.seal{
-  width:54px;height:54px;border-radius:50%;margin-bottom:14px;display:grid;place-items:center;font-size:1.5rem;
-  background:radial-gradient(circle at 30% 30%,#ff9cc0,var(--rose-d));box-shadow:0 6px 18px -4px #ff6b9d99;
-}
+.seal{width:54px;height:54px;border-radius:50%;margin-bottom:14px;display:grid;place-items:center;font-size:1.5rem;
+  background:radial-gradient(circle at 30% 30%,#ff9cc0,var(--rose-d));box-shadow:0 6px 18px -4px #ff6b9d99}
 
-/* header */
-.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .top .btn{width:auto;padding:8px 16px;font-size:.85rem}
 
-/* letter composer */
-.letter{
-  position:relative;background:linear-gradient(180deg,#34182a,var(--surface));
-  border:1px solid var(--line);border-radius:var(--r);padding:20px 18px 18px;
-  box-shadow:0 18px 40px -22px #000;
+/* chat */
+.chat{
+  display:flex;flex-direction:column;gap:10px;height:56vh;min-height:320px;overflow-y:auto;
+  padding:14px 12px;background:var(--bg2);border:1px solid var(--line);border-radius:22px;scroll-behavior:smooth;
 }
-.letter::before{
-  content:"";position:absolute;inset:8px;border:1px dashed #ff6b9d22;border-radius:12px;pointer-events:none;
+.day{align-self:center;font-size:.75rem;color:var(--muted);background:#ffffff0d;padding:2px 12px;border-radius:99px;margin:4px 0}
+.b{max-width:82%;padding:10px 14px 8px;white-space:pre-wrap;word-break:break-word;position:relative}
+/* RTL: flex-start = right side, flex-end = left side */
+.b.reply{align-self:flex-start;background:#3a2030;border:1px solid #ffffff14;border-radius:18px 18px 4px 18px}
+.b.mine{
+  align-self:flex-end;--mc:var(--rose);border-radius:18px 18px 18px 4px;
+  background:color-mix(in srgb,var(--mc) 20%,var(--bg2));
+  border:1px solid color-mix(in srgb,var(--mc) 50%,transparent);
 }
-.letter h2{margin-bottom:10px}
-.letter textarea{background:#1c0d16;position:relative}
-.row{display:flex;justify-content:space-between;align-items:center;margin-top:4px}
-.send{margin-top:16px;position:relative}
-
-/* tabs */
-.tabs{display:flex;gap:6px;margin:28px 0 12px;padding:5px;background:var(--bg2);border:1px solid var(--line);border-radius:16px}
-.tab{
-  flex:1;padding:10px 8px;border:0;border-radius:12px;background:transparent;color:var(--muted);
-  font:inherit;font-weight:500;cursor:pointer;transition:background .2s,color .2s;
-}
-.tab[aria-selected=true]{background:var(--rose);color:#fff;font-weight:600}
-.count{display:inline-block;min-width:22px;padding:0 6px;margin-inline-start:4px;border-radius:99px;background:#ffffff26;font-size:.78rem}
-
-/* cards */
-.card{
-  background:#ff6b9d14;border:1px solid #ff8cb42e;border-radius:var(--r);padding:14px 16px;margin:10px 0;
-  white-space:pre-wrap;word-break:break-word;
-}
-.quote{
-  display:block;margin-bottom:8px;padding:6px 10px;border-inline-start:3px solid var(--rose);
-  background:#00000026;border-radius:8px;color:var(--muted);font-size:.85rem;
-}
-.meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;flex-wrap:wrap}
-.badge{padding:2px 10px;border-radius:99px;font-size:.78rem;font-weight:500}
-.badge.lock{background:#f2c6a01f;color:var(--gold)}
-.badge.open{background:#7fd8a61a;color:var(--ok)}
-.del{
-  border:1px solid transparent;background:transparent;color:var(--muted);padding:4px 12px;border-radius:10px;
-  font:inherit;font-size:.82rem;cursor:pointer;transition:all .2s;
-}
-.del:hover{color:var(--danger);border-color:#ff7a8a55}
+.mood-tag{display:block;font-size:.78rem;margin-bottom:2px;color:color-mix(in srgb,var(--mc) 70%,#fff)}
+.quote{display:block;margin-bottom:6px;padding:4px 10px;border-inline-start:3px solid var(--rose);background:#00000026;border-radius:8px;color:var(--muted);font-size:.82rem}
+.foot{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;font-size:.72rem;color:var(--muted)}
+.read{color:var(--ok)}
+.lock{color:var(--gold)}
+.rx{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.rx span{background:#00000033;border:1px solid #ffffff1a;border-radius:99px;padding:0 9px;font-size:.85rem}
+.del{border:0;background:transparent;color:var(--muted);font:inherit;font-size:.72rem;cursor:pointer;padding:0 6px;border-radius:8px;margin-inline-start:auto}
+.del:hover{color:var(--danger)}
 .del.sure{background:var(--danger);color:#fff}
-.empty{text-align:center;padding:36px 12px;color:var(--muted);border:1px dashed var(--line);border-radius:var(--r)}
-.empty b{display:block;font-size:2rem;margin-bottom:4px}
-.sk{height:78px;border-radius:var(--r);margin:10px 0;background:linear-gradient(90deg,#ff6b9d0f,#ff6b9d22,#ff6b9d0f);background-size:200% 100%;animation:sh 1.2s infinite}
+.empty{margin:auto;text-align:center;color:var(--muted)}
+.empty b{display:block;font-size:2.2rem}
+.sk{height:56px;width:70%;border-radius:18px;background:linear-gradient(90deg,#ff6b9d0f,#ff6b9d22,#ff6b9d0f);background-size:200% 100%;animation:sh 1.2s infinite}
+.sk:nth-child(2){align-self:flex-end;width:55%}
 @keyframes sh{to{background-position:-200% 0}}
 
-/* toast */
+/* composer */
+.composer{margin-top:12px;padding:12px;background:linear-gradient(180deg,#34182a,var(--surface));border:1px solid var(--line);border-radius:22px}
+.moods{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none}
+.mood{
+  --mc:var(--rose);flex:none;border:1px solid var(--line);background:transparent;color:var(--muted);
+  padding:4px 12px;border-radius:99px;font:inherit;font-size:.82rem;cursor:pointer;transition:all .2s;
+}
+.mood[aria-pressed=true]{color:#fff;border-color:var(--mc);background:color-mix(in srgb,var(--mc) 40%,transparent)}
+.composer textarea{min-height:76px;max-height:200px}
+details{margin-top:8px}
+summary{cursor:pointer;color:var(--muted);font-size:.85rem}
+details input{margin-top:8px}
+.send{margin-top:10px}
+.cnt{float:left;margin-top:4px}
+
 #toast{
   position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);
-  background:#2b1522;border:1px solid var(--line);color:var(--blush);padding:12px 20px;border-radius:14px;
-  box-shadow:0 14px 30px -10px #000;opacity:0;pointer-events:none;transition:all .3s;z-index:9;max-width:90vw;
+  background:var(--surface);border:1px solid var(--line);padding:12px 20px;border-radius:14px;
+  box-shadow:0 14px 30px -10px #000;opacity:0;pointer-events:none;transition:all .3s;z-index:9;max-width:90vw
 }
 #toast.show{opacity:1;transform:translate(-50%,0)}
 #toast.err{border-color:var(--danger);color:#ffc2c9}
-
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <!-- Login -->
   <div id="login">
     <div class="login-card">
       <div class="seal">💌</div>
       <h1>أهلاً بيك</h1>
-      <p class="sub">سجّل دخولك علشان تكتب رسايلك وتقرا الردود.</p>
+      <p>سجّل دخولك علشان تكمل المحادثة.</p>
       <input id="em" type="email" placeholder="الإيميل" autocomplete="username" dir="ltr">
       <input id="pw" type="password" placeholder="الباسورد" autocomplete="current-password" dir="ltr" style="margin-top:10px">
       <button class="btn" id="loginBtn">دخول</button>
     </div>
   </div>
 
-  <!-- App -->
   <div id="app" hidden>
     <div class="top">
-      <h1>رسايلك</h1>
+      <h1>المحادثة</h1>
       <button class="btn ghost" id="logoutBtn">خروج</button>
     </div>
 
-    <section class="letter">
-      <h2>✍️ رسالة جديدة</h2>
+    <div class="chat" id="chat"></div>
+
+    <div class="composer">
+      <div class="moods" id="moods"></div>
       <textarea id="txt" placeholder="اكتب الرسالة..."></textarea>
-      <div class="row"><small id="cnt">0 حرف</small></div>
-      <label for="unlock">تتفتح في تاريخ معين (اختياري، سيبه فاضي لو عايزها تظهر فوراً)</label>
-      <input id="unlock" type="datetime-local">
+      <small class="cnt" id="cnt">0 حرف</small>
+      <details>
+        <summary>⏳ تتفتح في وقت معين (اختياري)</summary>
+        <input id="unlock" type="datetime-local">
+      </details>
       <button class="btn send" id="sendBtn">إرسال 💌</button>
-    </section>
-
-    <div class="tabs" role="tablist">
-      <button class="tab" role="tab" aria-selected="true" data-tab="replies">📥 الردود <span class="count" id="c-rep">0</span></button>
-      <button class="tab" role="tab" aria-selected="false" data-tab="msgs">📤 رسايلك <span class="count" id="c-msg">0</span></button>
     </div>
-
-    <div id="replies" role="tabpanel"></div>
-    <div id="msgs" role="tabpanel" hidden></div>
   </div>
 </div>
-
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
 const SB_URL = "https://lblzkdbbmgvcscipmvev.supabase.co";
 const SB_KEY = "sb_publishable_x7SR5s3ETJEnhX_Rt013JA_RF2FFTw-";
 
+const MOODS = {
+  miss:    { label: "🥺 شوق",   color: "#ff6b9d" },
+  love:    { label: "❤️ حب",    color: "#e5383b" },
+  sorry:   { label: "🥀 اعتذار", color: "#7a9cc6" },
+  surprise:{ label: "🎁 مفاجأة", color: "#f2c6a0" },
+  joy:     { label: "☀️ فرحة",  color: "#f4b942" },
+  calm:    { label: "🌙 هدوء",  color: "#9b8ae0" }
+};
+
 const $ = id => document.getElementById(id);
 const esc = s => { const d = document.createElement("div"); d.textContent = s ?? ""; return d.innerHTML; };
-const fmt = d => new Date(d).toLocaleString("ar-EG", { dateStyle: "medium", timeStyle: "short" });
+const timeFmt = d => new Date(d).toLocaleTimeString("ar-EG", { hour: "numeric", minute: "2-digit" });
+const dateFmt = d => new Date(d).toLocaleDateString("ar-EG", { weekday: "long", day: "numeric", month: "long" });
+const fullFmt = d => new Date(d).toLocaleString("ar-EG", { dateStyle: "medium", timeStyle: "short" });
 
-let session = null, timer = null;
+let session = null, timer = null, mood = null, first = true;
 try { session = JSON.parse(localStorage.getItem("adm_session")); } catch (e) {}
 
-/* ---------- UI helpers ---------- */
 let toastT;
-function toast(msg, isErr) {
-  const t = $("toast");
-  t.textContent = msg;
-  t.className = "show" + (isErr ? " err" : "");
-  clearTimeout(toastT);
-  toastT = setTimeout(() => t.className = "", 2800);
+function toast(msg, err) {
+  const t = $("toast"); t.textContent = msg; t.className = "show" + (err ? " err" : "");
+  clearTimeout(toastT); toastT = setTimeout(() => t.className = "", 2800);
 }
-function busy(btn, on, label) {
-  btn.disabled = on;
-  btn.innerHTML = on ? '<span class="spin"></span>' : label;
-}
-const skeleton = '<div class="sk"></div><div class="sk"></div>';
+function busy(btn, on, label) { btn.disabled = on; btn.innerHTML = on ? '<span class="spin"></span>' : label; }
 
 /* ---------- Auth ---------- */
-function saveSession(s) {
-  session = s;
-  try { localStorage.setItem("adm_session", JSON.stringify(s)); } catch (e) {}
-}
+function saveSession(s) { session = s; try { localStorage.setItem("adm_session", JSON.stringify(s)); } catch (e) {} }
 
 async function login() {
-  const btn = $("loginBtn");
-  busy(btn, true);
+  const btn = $("loginBtn"); busy(btn, true);
   try {
     const r = await fetch(`${SB_URL}/auth/v1/token?grant_type=password`, {
-      method: "POST",
-      headers: { apikey: SB_KEY, "Content-Type": "application/json" },
+      method: "POST", headers: { apikey: SB_KEY, "Content-Type": "application/json" },
       body: JSON.stringify({ email: $("em").value.trim(), password: $("pw").value })
     });
     const d = await r.json();
-    if (!r.ok || !d.access_token) { toast("الإيميل أو الباسورد غلط", true); return; }
+    if (!r.ok || !d.access_token) return toast("الإيميل أو الباسورد غلط", true);
     saveSession({ access_token: d.access_token, refresh_token: d.refresh_token });
     init();
-  } catch (e) {
-    toast("مفيش اتصال بالنت، جرّب تاني", true);
-  } finally {
-    busy(btn, false, "دخول");
-  }
+  } catch (e) { toast("مفيش اتصال بالنت، جرّب تاني", true); }
+  finally { busy(btn, false, "دخول"); }
 }
 
 async function refresh() {
   if (!session || !session.refresh_token) return false;
   const r = await fetch(`${SB_URL}/auth/v1/token?grant_type=refresh_token`, {
-    method: "POST",
-    headers: { apikey: SB_KEY, "Content-Type": "application/json" },
+    method: "POST", headers: { apikey: SB_KEY, "Content-Type": "application/json" },
     body: JSON.stringify({ refresh_token: session.refresh_token })
   });
   const d = await r.json();
@@ -249,120 +218,139 @@ async function api(path, opts = {}, retry = true) {
   const r = await fetch(`${SB_URL}/rest/v1/${path}`, {
     ...opts,
     headers: {
-      apikey: SB_KEY,
-      Authorization: "Bearer " + (session ? session.access_token : ""),
-      "Content-Type": "application/json",
-      ...(opts.headers || {})
+      apikey: SB_KEY, Authorization: "Bearer " + (session ? session.access_token : ""),
+      "Content-Type": "application/json", ...(opts.headers || {})
     }
   });
   if (r.status === 401 && retry && await refresh()) return api(path, opts, false);
   return r;
 }
 
-function logout() {
-  try { localStorage.removeItem("adm_session"); } catch (e) {}
-  location.reload();
+function logout() { try { localStorage.removeItem("adm_session"); } catch (e) {} location.reload(); }
+
+/* ---------- Chat ---------- */
+function bubbleMine(x, rx) {
+  const m = MOODS[x.mood];
+  const locked = x.unlock_at && new Date(x.unlock_at) > new Date();
+  const status = x.read_at
+    ? `<span class="read" title="${fullFmt(x.read_at)}">✓✓ اتقرت ${timeFmt(x.read_at)}</span>`
+    : `<span>✓ اتبعتت</span>`;
+  const lock = x.unlock_at
+    ? `<span class="lock">${locked ? "🔒 تتفتح " : "🔓 اتفتحت "}${fullFmt(x.unlock_at)}</span>` : "";
+  const chips = rx.length ? `<div class="rx">${rx.map(e => `<span>${esc(e.emoji)}${e.n > 1 ? " " + e.n : ""}</span>`).join("")}</div>` : "";
+  return `<div class="b mine" ${m ? `style="--mc:${m.color}"` : ""}>
+    ${m ? `<span class="mood-tag">${m.label}</span>` : ""}${esc(x.text)}${chips}
+    <div class="foot"><span>${timeFmt(x.created_at)}</span>${status}${lock}
+      <button class="del" data-id="${esc(x.id)}">حذف</button></div></div>`;
 }
 
-/* ---------- Data ---------- */
-const empty = (icon, text) => `<div class="empty"><b>${icon}</b>${text}</div>`;
+function bubbleReply(x) {
+  return `<div class="b reply">
+    ${x.reply_to_text ? `<span class="quote">↩ ${esc(x.reply_to_text.slice(0, 60))}${x.reply_to_text.length > 60 ? "..." : ""}</span>` : ""}
+    ${esc(x.text)}
+    <div class="foot"><span>${timeFmt(x.created_at)}</span>
+      <button class="del" data-kind="replies" data-id="${esc(x.id)}">حذف</button></div></div>`;
+}
 
 async function load() {
   try {
-    const r = await api("replies?select=*&order=created_at.desc");
-    if (r.status === 401) return logout();
-    const rep = await r.json();
-    const reps = Array.isArray(rep) ? rep : [];
-    $("c-rep").textContent = reps.length;
-    $("replies").innerHTML = reps.length ? reps.map(x => `
-      <div class="card">
-        ${x.reply_to_text ? `<span class="quote">↩ ${esc(x.reply_to_text.slice(0, 60))}${x.reply_to_text.length > 60 ? "..." : ""}</span>` : ""}
-        ${esc(x.text)}
-        <div class="meta"><small>${fmt(x.created_at)}</small></div>
-      </div>`).join("") : empty("🕊️", "مفيش ردود لسه");
+    const [rr, mr, xr] = await Promise.all([
+      api("replies?select=*&order=created_at.asc"),
+      api("messages?select=*&order=created_at.asc"),
+      api("reactions?select=*")
+    ]);
+    if (rr.status === 401 || mr.status === 401) return logout();
+    const reps = await rr.json(), msgs = await mr.json();
+    const rxAll = xr.ok ? await xr.json() : [];
 
-    const m = await (await api("messages?select=*&order=created_at.desc")).json();
-    const msgs = Array.isArray(m) ? m : [];
-    $("c-msg").textContent = msgs.length;
-    $("msgs").innerHTML = msgs.length ? msgs.map(x => {
-      const locked = x.unlock_at && new Date(x.unlock_at) > new Date();
-      return `
-      <div class="card">
-        ${esc(x.text.slice(0, 150))}${x.text.length > 150 ? "..." : ""}
-        <div class="meta">
-          <span class="badge ${x.unlock_at ? "lock" : "open"}">${x.unlock_at ? (locked ? "🔒 تتفتح: " : "🔓 اتفتحت: ") + fmt(x.unlock_at) : "✅ مفتوحة"}</span>
-          <button class="del" data-id="${esc(x.id)}">حذف</button>
-        </div>
-      </div>`;
-    }).join("") : empty("💭", "اكتب أول رسالة من فوق");
-  } catch (e) {
-    toast("حصلت مشكلة في التحميل", true);
-  }
+    // group reactions per message: [{emoji, n}]
+    const rxMap = {};
+    (Array.isArray(rxAll) ? rxAll : []).forEach(r => {
+      const g = rxMap[r.message_id] = rxMap[r.message_id] || {};
+      g[r.emoji] = (g[r.emoji] || 0) + 1;
+    });
+
+    const items = [
+      ...(Array.isArray(msgs) ? msgs : []).map(x => ({ t: "m", x })),
+      ...(Array.isArray(reps) ? reps : []).map(x => ({ t: "r", x }))
+    ].sort((a, b) => new Date(a.x.created_at) - new Date(b.x.created_at));
+
+    const chat = $("chat");
+    const nearBottom = chat.scrollHeight - chat.scrollTop - chat.clientHeight < 120;
+
+    let html = "", lastDay = "";
+    for (const it of items) {
+      const d = dateFmt(it.x.created_at);
+      if (d !== lastDay) { html += `<div class="day">${d}</div>`; lastDay = d; }
+      html += it.t === "m"
+        ? bubbleMine(it.x, Object.entries(rxMap[it.x.id] || {}).map(([emoji, n]) => ({ emoji, n })))
+        : bubbleReply(it.x);
+    }
+    chat.innerHTML = html || '<div class="empty"><b>💭</b>ابدأ بأول رسالة من تحت</div>';
+
+    if (first || nearBottom) { chat.scrollTop = chat.scrollHeight; first = false; }
+  } catch (e) { toast("حصلت مشكلة في التحميل", true); }
 }
 
 async function sendMsg() {
   const text = $("txt").value.trim();
   if (!text) return toast("اكتب الرسالة الأول", true);
   const u = $("unlock").value;
-  const btn = $("sendBtn");
-  busy(btn, true);
+  const btn = $("sendBtn"); busy(btn, true);
   try {
-    const r = await api("messages", {
-      method: "POST",
-      headers: { Prefer: "return=minimal" },
-      body: JSON.stringify({ text, unlock_at: u ? new Date(u).toISOString() : null })
-    });
+    const body = { text, unlock_at: u ? new Date(u).toISOString() : null };
+    if (mood) body.mood = mood;
+    const r = await api("messages", { method: "POST", headers: { Prefer: "return=minimal" }, body: JSON.stringify(body) });
     if (!r.ok) return toast("حصل خطأ: " + (await r.text()), true);
-    $("txt").value = "";
-    $("unlock").value = "";
-    $("cnt").textContent = "0 حرف";
+    $("txt").value = ""; $("unlock").value = ""; $("cnt").textContent = "0 حرف";
+    setMood(null);
+    first = true;
     toast("اتبعتت 💌");
     load();
-  } catch (e) {
-    toast("مفيش اتصال بالنت، جرّب تاني", true);
-  } finally {
-    busy(btn, false, "إرسال 💌");
-  }
+  } catch (e) { toast("مفيش اتصال بالنت، جرّب تاني", true); }
+  finally { busy(btn, false, "إرسال 💌"); }
 }
 
-async function del(id) {
-  const r = await api("messages?id=eq." + encodeURIComponent(id), { method: "DELETE" });
+async function del(id, table = "messages") {
+  const r = await api(table + "?id=eq." + encodeURIComponent(id), { method: "DELETE" });
   toast(r.ok ? "اتحذفت" : "ماقدرتش أحذف", !r.ok);
   load();
 }
+
+/* ---------- Mood picker ---------- */
+function setMood(k) {
+  mood = k;
+  document.querySelectorAll(".mood").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === k));
+}
+$("moods").innerHTML = Object.entries(MOODS).map(([k, m]) =>
+  `<button type="button" class="mood" data-k="${k}" aria-pressed="false" style="--mc:${m.color}">${m.label}</button>`).join("");
+$("moods").addEventListener("click", e => {
+  const b = e.target.closest(".mood"); if (!b) return;
+  setMood(mood === b.dataset.k ? null : b.dataset.k);
+});
 
 /* ---------- Events ---------- */
 $("loginBtn").onclick = login;
 $("logoutBtn").onclick = logout;
 $("sendBtn").onclick = sendMsg;
 ["em", "pw"].forEach(id => $(id).addEventListener("keydown", e => { if (e.key === "Enter") login(); }));
-$("txt").addEventListener("input", e => $("cnt").textContent = e.target.value.length + " حرف");
-
-document.querySelectorAll(".tab").forEach(t => t.onclick = () => {
-  document.querySelectorAll(".tab").forEach(x => x.setAttribute("aria-selected", x === t));
-  $("replies").hidden = t.dataset.tab !== "replies";
-  $("msgs").hidden = t.dataset.tab !== "msgs";
+$("txt").addEventListener("input", e => {
+  $("cnt").textContent = e.target.value.length + " حرف";
+  e.target.style.height = "auto"; e.target.style.height = Math.min(e.target.scrollHeight, 200) + "px";
 });
-
-// two-tap delete: first tap asks, second tap deletes
-$("msgs").addEventListener("click", e => {
-  const b = e.target.closest(".del");
-  if (!b) return;
-  if (b.classList.contains("sure")) return del(b.dataset.id);
-  b.classList.add("sure");
-  b.textContent = "تأكيد الحذف؟";
+$("chat").addEventListener("click", e => {
+  const b = e.target.closest(".del"); if (!b) return;
+  if (b.classList.contains("sure")) return del(b.dataset.id, b.dataset.kind || "messages");
+  b.classList.add("sure"); b.textContent = "تأكيد الحذف؟";
   setTimeout(() => { b.classList.remove("sure"); b.textContent = "حذف"; }, 3000);
 });
 
 function init() {
   if (!session) return;
-  $("login").hidden = true;
-  $("app").hidden = false;
-  $("replies").innerHTML = skeleton;
-  $("msgs").innerHTML = skeleton;
+  $("login").hidden = true; $("app").hidden = false;
+  $("chat").innerHTML = '<div class="sk"></div><div class="sk"></div>';
   load();
-  clearInterval(timer);
-  timer = setInterval(load, 15000);
+  clearInterval(timer); timer = setInterval(load, 15000);
 }
 init();
 </script>
