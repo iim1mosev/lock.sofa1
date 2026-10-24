@@ -109,6 +109,10 @@ details input{margin-top:8px}
 .send{margin-top:10px}
 .cnt{float:left;margin-top:4px}
 
+#pushBtn{transition:background .25s,color .25s,border-color .25s}
+#pushBtn.on{background:#ffffff0d;color:#8d7885;border-color:#ffffff22}
+#pushBtn.off{background:linear-gradient(135deg,var(--rose),var(--rose-d));color:#fff;border-color:transparent;animation:pbeat 1.8s ease-out infinite}
+@keyframes pbeat{0%{box-shadow:0 0 0 0 #ff6b9db3}70%{box-shadow:0 0 0 12px #ff6b9d00}100%{box-shadow:0 0 0 0 #ff6b9d00}}
 #toast{
   position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,30px);
   background:var(--surface);border:1px solid var(--line);padding:12px 20px;border-radius:14px;
@@ -371,21 +375,52 @@ async function adminPost(row) {
   });
   return r.status === 409 ? { ok: true } : r;   // الجهاز مسجّل قبل كده
 }
-function setupAdminPush() {
+let pushOn = false;
+function setPushUI(on) {
+  pushOn = on;
+  const btn = $("pushBtn");
+  btn.classList.toggle("on", on);
+  btn.classList.toggle("off", !on);
+  btn.title = on ? "الإشعارات شغّالة (اضغط لإطفائها)" : "الإشعارات مطفية (اضغط لتشغيلها)";
+}
+
+async function setupAdminPush() {
   const btn = $("pushBtn");
   if (!pushSupported) { btn.hidden = true; return; }
-  if (Notification.permission === "granted") {
-    pushSubscribe("admin", adminPost).catch(() => {});
-    btn.hidden = true;
-  }
+
+  // الحالة الحالية: شغّالة لو الإذن موجود والجهاز مشترك فعلاً
+  let on = false;
+  try {
+    if (Notification.permission === "granted") {
+      const reg = await navigator.serviceWorker.getRegistration();
+      on = !!(reg && await reg.pushManager.getSubscription());
+      if (on) pushSubscribe("admin", adminPost).catch(() => {});   // مزامنة هادية مع الداتابيز
+    }
+  } catch (e) {}
+  setPushUI(on);
+
   btn.onclick = async () => {
+    btn.disabled = true;
     try {
-      if (await Notification.requestPermission() !== "granted") return toast("لازم تسمح بالإشعارات", true);
-      const r = await pushSubscribe("admin", adminPost);
-      if (!r.ok) throw new Error("DB " + r.status + " " + (await r.text()).slice(0, 100));
-      btn.hidden = true;
-      toast("تم تفعيل الإشعارات 🔔");
-    } catch (e) { console.error(e); toast("خطأ: " + String((e && e.message) || e).slice(0, 160), true); }
+      if (pushOn) {
+        const reg = await navigator.serviceWorker.getRegistration();
+        const sub = reg && await reg.pushManager.getSubscription();
+        if (sub) await sub.unsubscribe();
+        setPushUI(false);
+        toast("اتطفت الإشعارات 🔕");
+      } else {
+        if (await Notification.requestPermission() !== "granted") return toast("لازم تسمح بالإشعارات", true);
+        const r = await pushSubscribe("admin", adminPost);
+        if (!r.ok) throw new Error("DB " + r.status + " " + (await r.text()).slice(0, 100));
+        setPushUI(true);
+        toast("تم تفعيل الإشعارات 🔔");
+      }
+    } catch (e) {
+      console.error(e);
+      toast("خطأ: " + String((e && e.message) || e).slice(0, 160), true);
+    } finally {
+      btn.disabled = false;
+    }
   };
 }
 
