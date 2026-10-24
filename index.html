@@ -136,7 +136,7 @@ details input{margin-top:8px}
   <div id="app" hidden>
     <div class="top">
       <h1>المحادثة</h1>
-      <button class="btn ghost" id="logoutBtn">خروج</button>
+      <div style="display:flex;gap:8px"><button class="btn ghost" id="pushBtn">🔔 إشعارات</button><button class="btn ghost" id="logoutBtn">خروج</button></div>
     </div>
 
     <div class="chat" id="chat"></div>
@@ -345,10 +345,52 @@ $("chat").addEventListener("click", e => {
   setTimeout(() => { b.classList.remove("sure"); b.textContent = "حذف"; }, 3000);
 });
 
+
+/* ============ إشعارات الموقع المقفول (Web Push) ============ */
+const VAPID_PUBLIC = "BOHzviU-Buf6Dc-dcDUW460uWMiWdnr8V9NLdrsh2TFrIykoCGpqKgr_JRZeLigW_lsZrrEwxm9JEHVie6C6-fw";
+function b64ToU8(s) {
+    const p = "=".repeat((4 - s.length % 4) % 4);
+    const b = atob((s + p).replace(/-/g, "+").replace(/_/g, "/"));
+    return Uint8Array.from(b, c => c.charCodeAt(0));
+}
+async function pushSubscribe(role, post) {
+    const reg = await navigator.serviceWorker.register("sw.js");
+    await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToU8(VAPID_PUBLIC) });
+    const j = sub.toJSON();
+    return post({ role, endpoint: j.endpoint, p256dh: j.keys.p256dh, auth: j.keys.auth });
+}
+const pushSupported = "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
+
+function adminPost(row) {
+  return api("push_subscriptions?on_conflict=endpoint", {
+    method: "POST", headers: { Prefer: "resolution=ignore-duplicates,return=minimal" }, body: JSON.stringify(row)
+  });
+}
+function setupAdminPush() {
+  const btn = $("pushBtn");
+  if (!pushSupported) { btn.hidden = true; return; }
+  if (Notification.permission === "granted") {
+    pushSubscribe("admin", adminPost).catch(() => {});
+    btn.hidden = true;
+  }
+  btn.onclick = async () => {
+    try {
+      if (await Notification.requestPermission() !== "granted") return toast("لازم تسمح بالإشعارات", true);
+      const r = await pushSubscribe("admin", adminPost);
+      if (!r.ok) throw new Error(r.status);
+      btn.hidden = true;
+      toast("تم تفعيل الإشعارات 🔔");
+    } catch (e) { toast("حصل خطأ، جرّب تاني", true); }
+  };
+}
+
 function init() {
   if (!session) return;
   $("login").hidden = true; $("app").hidden = false;
   $("chat").innerHTML = '<div class="sk"></div><div class="sk"></div>';
+  setupAdminPush();
   load();
   clearInterval(timer); timer = setInterval(load, 15000);
 }
