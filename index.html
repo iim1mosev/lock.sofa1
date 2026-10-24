@@ -365,10 +365,11 @@ async function pushSubscribe(role, post) {
 }
 const pushSupported = "serviceWorker" in navigator && "PushManager" in window && "Notification" in window;
 
-function adminPost(row) {
-  return api("push_subscriptions?on_conflict=endpoint", {
-    method: "POST", headers: { Prefer: "resolution=ignore-duplicates,return=minimal" }, body: JSON.stringify(row)
+async function adminPost(row) {
+  const r = await api("push_subscriptions", {
+    method: "POST", headers: { Prefer: "return=minimal" }, body: JSON.stringify(row)
   });
+  return r.status === 409 ? { ok: true } : r;   // الجهاز مسجّل قبل كده
 }
 function setupAdminPush() {
   const btn = $("pushBtn");
