@@ -180,7 +180,7 @@ try { session = JSON.parse(localStorage.getItem("adm_session")); } catch (e) {}
 let toastT;
 function toast(msg, err) {
   const t = $("toast"); t.textContent = msg; t.className = "show" + (err ? " err" : "");
-  clearTimeout(toastT); toastT = setTimeout(() => t.className = "", 2800);
+  clearTimeout(toastT); toastT = setTimeout(() => t.className = "", err ? 7000 : 2800);
 }
 function busy(btn, on, label) { btn.disabled = on; btn.innerHTML = on ? '<span class="spin"></span>' : label; }
 
@@ -354,7 +354,9 @@ function b64ToU8(s) {
     return Uint8Array.from(b, c => c.charCodeAt(0));
 }
 async function pushSubscribe(role, post) {
-    const reg = await navigator.serviceWorker.register("sw.js");
+    let reg;
+    try { reg = await navigator.serviceWorker.register("sw.js"); }
+    catch (e) { throw new Error("sw.js: " + e.message); }
     await navigator.serviceWorker.ready;
     let sub = await reg.pushManager.getSubscription();
     if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToU8(VAPID_PUBLIC) });
@@ -379,10 +381,10 @@ function setupAdminPush() {
     try {
       if (await Notification.requestPermission() !== "granted") return toast("لازم تسمح بالإشعارات", true);
       const r = await pushSubscribe("admin", adminPost);
-      if (!r.ok) throw new Error(r.status);
+      if (!r.ok) throw new Error("DB " + r.status + " " + (await r.text()).slice(0, 100));
       btn.hidden = true;
       toast("تم تفعيل الإشعارات 🔔");
-    } catch (e) { toast("حصل خطأ، جرّب تاني", true); }
+    } catch (e) { console.error(e); toast("خطأ: " + String((e && e.message) || e).slice(0, 160), true); }
   };
 }
 
